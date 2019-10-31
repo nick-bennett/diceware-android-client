@@ -4,10 +4,9 @@ import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.List;
 
-
 public class Passphrase implements Serializable {
 
-  // TODO Add serialization ID
+  private static final long serialVersionUID = -6693587121163744899L;
 
   @Expose
   private long id;
