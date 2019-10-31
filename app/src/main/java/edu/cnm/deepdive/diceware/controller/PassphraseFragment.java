@@ -41,12 +41,14 @@ public class PassphraseFragment extends DialogFragment {
     if (passphrase.getKey() != null) {
       passphraseKey.setText(passphrase.getKey());
     }
+    // TODO Set words field.
     return new AlertDialog.Builder(getContext())
         .setTitle("Passphrase Details")
         .setView(view)
         .setNegativeButton("Cancel", (dialog, button) -> {})
         .setPositiveButton("Ok", (dialog, button) -> {
           if (listener != null) {
+            // TODO Trim key, split words.
             passphrase.setKey(passphraseKey.getText().toString());
             listener.complete(passphrase);
           }

@@ -7,6 +7,8 @@ import java.util.List;
 
 public class Passphrase implements Serializable {
 
+  // TODO Add serialization ID
+
   @Expose
   private long id;
 
