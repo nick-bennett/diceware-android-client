@@ -34,7 +34,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- *
+ * Supplier of {@link LiveData} intended to be consumed by an instance of {@link
+ * edu.cnm.deepdive.diceware.controller.MainActivity} (and any hosted fragments within).
  */
 public class MainViewModel extends AndroidViewModel implements LifecycleObserver {
 
@@ -45,8 +46,10 @@ public class MainViewModel extends AndroidViewModel implements LifecycleObserver
   private final CompositeDisposable pending;
 
   /**
+   * Initializes the {@link LiveData} and {@link CompositeDisposable} containers used by this
+   * instance.
    *
-   * @param application
+   * @param application {@link Application} context.
    */
   public MainViewModel(@NonNull Application application) {
     super(application);
@@ -58,24 +61,21 @@ public class MainViewModel extends AndroidViewModel implements LifecycleObserver
   }
 
   /**
-   *
-   * @return
+   * Returns the observable list of {@link Passphrase} instances from the server-based collection.
    */
   public LiveData<List<Passphrase>> getPassphrases() {
     return passphrases;
   }
 
   /**
-   *
-   * @return
+   * Returns the most recently thrown exception or error.
    */
   public LiveData<Throwable> getThrowable() {
     return throwable;
   }
 
   /**
-   *
-   * @param account
+   * Sets the currently logged-in user.
    */
   public void setAccount(GoogleSignInAccount account) {
     this.account.setValue(account);
@@ -83,8 +83,7 @@ public class MainViewModel extends AndroidViewModel implements LifecycleObserver
   }
 
   /**
-   *
-   * @param passphrase
+   * Deletes the specified {@link Passphrase} from the server-based collection.
    */
   public void deletePassphrase(Passphrase passphrase) {
     GoogleSignInAccount account = this.account.getValue();
@@ -99,7 +98,7 @@ public class MainViewModel extends AndroidViewModel implements LifecycleObserver
   }
 
   /**
-   *
+   * Request a refresh from the server of the collection of {@link Passphrase} instances.
    */
   public void refreshPassphrases() {
     GoogleSignInAccount account = this.account.getValue();
@@ -111,8 +110,7 @@ public class MainViewModel extends AndroidViewModel implements LifecycleObserver
   }
 
   /**
-   *
-   * @param passphrase
+   * Adds the specified {@link Passphrase} instance to the server-based collection.
    */
   public void addPassphrase(Passphrase passphrase) {
     GoogleSignInAccount account = this.account.getValue();
@@ -127,17 +125,16 @@ public class MainViewModel extends AndroidViewModel implements LifecycleObserver
   }
 
   /**
-   *
-   * @param passphrase
+   * Updates the specified {@link Passphrase} instance in the server-based collection.
    */
   public void updatePassphrase(Passphrase passphrase) {
     GoogleSignInAccount account = this.account.getValue();
     if (account != null) {
       String token = getAuthorizationHeader(account);
       pending.add(
-      dicewareService.put(token, passphrase.getId(), passphrase)
-          .subscribeOn(Schedulers.io())
-          .subscribe((p) -> refreshPassphrases(account), this.throwable::postValue)
+          dicewareService.put(token, passphrase.getId(), passphrase)
+              .subscribeOn(Schedulers.io())
+              .subscribe((p) -> refreshPassphrases(account), this.throwable::postValue)
       );
     }
   }
@@ -145,9 +142,9 @@ public class MainViewModel extends AndroidViewModel implements LifecycleObserver
   private void refreshPassphrases(GoogleSignInAccount account) {
     String token = getAuthorizationHeader(account);
     pending.add(
-    dicewareService.getAll(token)
-        .subscribeOn(Schedulers.io())
-        .subscribe(this.passphrases::postValue, this.throwable::postValue)
+        dicewareService.getAll(token)
+            .subscribeOn(Schedulers.io())
+            .subscribe(this.passphrases::postValue, this.throwable::postValue)
     );
   }
 

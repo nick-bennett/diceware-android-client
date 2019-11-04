@@ -29,9 +29,8 @@ import edu.cnm.deepdive.diceware.view.PassphraseAdapter.Holder;
 import java.util.List;
 
 /**
- *
- *
- * @author Nicholas Bennett, Todd Nordquist, Brian Bleck, Deep Dive Coding Java + Android Cohort 8
+ * Simple subclass of {@link RecyclerView.Adapter} that displays {@link Passphrase#getKey()} values,
+ * with the consumer providing listeners for click and long (context) press events.
  */
 public class PassphraseAdapter extends RecyclerView.Adapter<Holder> {
 
@@ -41,11 +40,12 @@ public class PassphraseAdapter extends RecyclerView.Adapter<Holder> {
   private final OnContextListener contextListener;
 
   /**
+   * Initializes the adapter with the specified passphrases and event listeners.
    *
-   * @param context
-   * @param passphrases
-   * @param clickListener
-   * @param contextListener
+   * @param context {@link Context} object used for obtaining a {@link LayoutInflater}.
+   * @param passphrases {@link List List&lt;Passphrase&gt;} to display in {@link RecyclerView}.
+   * @param clickListener {@link OnClickListener} to handle click events; may be {@code null}.
+   * @param contextListener {@link OnContextListener} to handle long press events; may be {@code null}.
    */
   public PassphraseAdapter(Context context, List<Passphrase> passphrases,
       OnClickListener clickListener, OnContextListener contextListener) {
@@ -56,10 +56,12 @@ public class PassphraseAdapter extends RecyclerView.Adapter<Holder> {
   }
 
   /**
+   * Creates and returns a {@link Holder} that can be bound to any {@link
+   * Passphrase} in this instance's list of items.
    *
-   * @param parent
-   * @param viewType
-   * @return
+   * @param parent enclosing {@link RecyclerView}.
+   * @param viewType desired view type (ignored in this implementation).
+   * @return {@link Holder} referencing inflated layout.
    */
   @NonNull
   @Override
@@ -69,9 +71,11 @@ public class PassphraseAdapter extends RecyclerView.Adapter<Holder> {
   }
 
   /**
+   * Binds the specified {@link Holder} to the {@link Passphrase} at the specified position in this
+   * adapter instance.
    *
-   * @param holder
-   * @param position
+   * @param holder {@link Holder} referencing a bindable {@link View}.
+   * @param position index of item in the adapter's list to bind to {@code holder}.
    */
   @Override
   public void onBindViewHolder(@NonNull Holder holder, int position) {
@@ -80,8 +84,9 @@ public class PassphraseAdapter extends RecyclerView.Adapter<Holder> {
   }
 
   /**
+   * Returns the number of items in the this instance's list of passphrases.
    *
-   * @return
+   * @return count.
    */
   @Override
   public int getItemCount() {
@@ -89,38 +94,45 @@ public class PassphraseAdapter extends RecyclerView.Adapter<Holder> {
   }
 
   /**
-   *
+   * Listener for {@link PassphraseAdapter} item clicks.
    */
   @FunctionalInterface
   public interface OnClickListener {
 
     /**
+     * Handles a click on a specified {@link View} in the {@link RecyclerView}, corresponding to
+     * the {@link Passphrase} at index {@code position} in the {@link PassphraseAdapter}.
      *
-     * @param view
-     * @param position
-     * @param passphrase
+     * @param view clicked {@link View}.
+     * @param position selected item index of the {@link PassphraseAdapter}.
+     * @param passphrase {@link Passphrase} instance bound to the {@link Holder} at {code position}.
      */
     void onClick(View view, int position, Passphrase passphrase);
 
   }
 
   /**
-   *
+   * Listener for {@link PassphraseAdapter} context (long) presses.
    */
   @FunctionalInterface
   public interface OnContextListener {
 
     /**
+     * Handles a long press on a specified {@code position} in the {@link PassphraseAdapter}.
      *
-     * @param menu
-     * @param position
-     * @param passphrase
+     * @param menu {@link Menu} instance to which context items may be attached.
+     * @param position index of pressed item in {@link PassphraseAdapter}.
+     * @param passphrase pressed instance of {@link Passphrase}.
      */
     void onLongPress(Menu menu, int position, Passphrase passphrase);
 
   }
 
-  class Holder extends RecyclerView.ViewHolder {
+  /**
+   * Binder for {@link View} items in a {@link RecyclerView} and {@link Passphrase} items in a
+   * {@link PassphraseAdapter}.
+   */
+  public class Holder extends RecyclerView.ViewHolder {
 
     private final View view;
 

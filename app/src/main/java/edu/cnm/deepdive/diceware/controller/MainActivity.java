@@ -40,8 +40,6 @@ import java.util.List;
 /**
  * Main user interface for accessing a passphrase storage service, providing creation (including
  * random generation using a diceware word list), listing, updating, and deletion of passphrases.
- *
- * @author Nicholas Bennett, Todd Nordquist, Brian Bleck, Deep Dive Coding Java + Android Cohort 8
  */
 public class MainActivity extends AppCompatActivity
     implements OnClickListener, OnContextListener, OnCompleteListener {

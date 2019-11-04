@@ -111,7 +111,8 @@ public class PassphraseFragment extends DialogFragment {
 
   private void populatePassphrase() {
     passphrase.setKey(passphraseKey.getText().toString().trim());
-    passphrase.setWords(Arrays.asList(passphraseWords.getText().toString().trim().split("\\s+")));
+    String words = passphraseWords.getText().toString().trim();
+    passphrase.setWords(words.isEmpty() ? null : Arrays.asList(words.split("\\s+")));
     ((OnCompleteListener) getActivity()).updatePassphrase(passphrase);
   }
 
